@@ -1,0 +1,334 @@
+<title>AHEADD Issue Reporter</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --border-hover: #94a3b8;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #1a7f37;
+    --accent-light: #dcfce7;
+    --bug: #e11d48;
+    --bug-light: #fff1f2;
+    --feat: #0ea5e9;
+    --feat-light: #f0f9ff;
+    --selected-ring: #1a7f37;
+    --card-selected-bg: #f0fdf4;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --border: #334155;
+      --border-hover: #64748b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #4ade80;
+      --accent-light: #14532d;
+      --bug: #fb7185;
+      --bug-light: #4c0519;
+      --feat: #38bdf8;
+      --feat-light: #0c4a6e;
+      --selected-ring: #4ade80;
+      --card-selected-bg: #14532d;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --border: #334155;
+    --border-hover: #64748b;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --accent: #4ade80;
+    --accent-light: #14532d;
+    --bug: #fb7185;
+    --bug-light: #4c0519;
+    --feat: #38bdf8;
+    --feat-light: #0c4a6e;
+    --selected-ring: #4ade80;
+    --card-selected-bg: #14532d;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-block: 48px 64px;
+    padding-inline: 16px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    text-wrap: balance;
+    color: var(--text);
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 24px;
+  }
+
+  .step-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .modules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .module-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    outline: none;
+  }
+
+  .module-btn:hover {
+    border-color: var(--border-hover);
+  }
+
+  .module-btn:focus-visible {
+    box-shadow: 0 0 0 3px var(--selected-ring);
+  }
+
+  .module-btn.selected {
+    border-color: var(--selected-ring);
+    background: var(--card-selected-bg);
+    box-shadow: 0 0 0 1px var(--selected-ring);
+  }
+
+  .module-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .module-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .module-icon {
+    font-size: 18px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 0 20px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .action-btn {
+    flex: 1;
+    padding: 13px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: opacity 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  .action-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .action-btn:not(:disabled):hover {
+    opacity: 0.88;
+  }
+
+  .action-btn:not(:disabled):active {
+    transform: scale(0.98);
+  }
+
+  .btn-bug {
+    background: var(--bug-light);
+    color: var(--bug);
+    border-color: var(--bug);
+  }
+
+  .btn-feat {
+    background: var(--feat-light);
+    color: var(--feat);
+    border-color: var(--feat);
+  }
+
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 420px) {
+    .modules { grid-template-columns: 1fr; }
+    .actions { flex-direction: column; }
+    .card { padding: 24px 20px; }
+  }
+</style>
+
+<div class="logo">
+  <div class="logo-mark">A</div>
+  <div>
+    <div class="logo-text">AHEADD</div>
+    <div class="logo-sub">QA Issue Reporter</div>
+  </div>
+</div>
+
+<div class="card">
+  <h1>Report an Issue</h1>
+  <p class="subtitle">Select the module where you found the bug or want to suggest a feature.</p>
+
+  <div class="step-label">Select module</div>
+
+  <div class="modules" id="modules">
+    <button class="module-btn" data-repo="aheadd-user-backend" onclick="select(this)">
+      <span class="module-icon">👤</span>
+      <div class="module-name">User App</div>
+      <div class="module-desc">Login, profile, jobs, apply, internships</div>
+    </button>
+    <button class="module-btn" data-repo="aheadd-business-backend" onclick="select(this)">
+      <span class="module-icon">🏢</span>
+      <div class="module-name">Business</div>
+      <div class="module-desc">Employer portal, job posting, dashboard</div>
+    </button>
+    <button class="module-btn" data-repo="aheadd-resume-engine" onclick="select(this)">
+      <span class="module-icon">📄</span>
+      <div class="module-name">Resume Builder</div>
+      <div class="module-desc">Resume creation, templates, export</div>
+    </button>
+    <button class="module-btn" data-repo="aheadd-recommendation-engine" onclick="select(this)">
+      <span class="module-icon">🎯</span>
+      <div class="module-name">Recommendations</div>
+      <div class="module-desc">Job & role suggestions, matching</div>
+    </button>
+    <button class="module-btn" data-repo="aheadd-notification-engine" onclick="select(this)">
+      <span class="module-icon">🔔</span>
+      <div class="module-name">Notifications</div>
+      <div class="module-desc">Alerts, emails, push notifications</div>
+    </button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="actions">
+    <button class="action-btn btn-bug" id="bugBtn" disabled onclick="openIssue('bug_report')">
+      🐛 Bug Report
+    </button>
+    <button class="action-btn btn-feat" id="featBtn" disabled onclick="openIssue('feature_request')">
+      ✨ Feature Request
+    </button>
+  </div>
+
+  <p class="hint" id="hint">Select a module above to continue</p>
+</div>
+
+<script>
+  let selectedRepo = null;
+
+  function select(btn) {
+    document.querySelectorAll('.module-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedRepo = btn.dataset.repo;
+    document.getElementById('bugBtn').disabled = false;
+    document.getElementById('featBtn').disabled = false;
+    document.getElementById('hint').textContent = 'Choose the type of issue to open GitHub';
+  }
+
+  function openIssue(template) {
+    if (!selectedRepo) return;
+    const url = `https://github.com/Dream-Ahead/${selectedRepo}/issues/new?template=${template}.md`;
+    window.open(url, '_blank');
+  }
+</script>
