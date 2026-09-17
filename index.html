@@ -143,7 +143,7 @@
 
   .modules {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
     margin-bottom: 24px;
   }
@@ -252,6 +252,10 @@
     margin-top: 20px;
   }
 
+  @media (max-width: 600px) {
+    .modules { grid-template-columns: 1fr 1fr; }
+  }
+
   @media (max-width: 420px) {
     .modules { grid-template-columns: 1fr; }
     .actions { flex-direction: column; }
@@ -330,6 +334,12 @@
   <p class="hint" id="hint">Select a module above to continue</p>
 </div>
 
+<div style="margin-top: 16px; text-align: center;">
+  <a href="https://github.com/orgs/Dream-Ahead/projects/3" target="_blank" style="font-size: 13px; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border);">
+    📋 View Sprint Board
+  </a>
+</div>
+
 <script>
   let selectedRepo = null;
 
@@ -348,4 +358,3 @@
     window.open(url, '_blank');
   }
 </script>
-<!-- build Thu Sep 17 21:29:44 IST 2026 -->
